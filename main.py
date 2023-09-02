@@ -12,6 +12,7 @@ from secret import my_email, password, receivers
 logging.basicConfig(filename='script.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s', filemode='a')
 
+
 def get_date() -> tuple:
     """Gets today's date and retuns today's date
     and date 30 days from now as a tuple."""
@@ -45,14 +46,12 @@ def get_description(link) -> str:
                         return span.text
                     if p.text:
                         return p.text
-
             p_with_class = soup.select('p[class*="b-content__annot"]')
             for p in p_with_class:
                 if p.find("strong"):
                     return p.find("strong").text
                 if p.find("span"):
                     return p.find("span").text
-       
             return ""
         except Exception as e:
             logging.error(f"Error is {e}")
@@ -82,8 +81,6 @@ def scrape_events(category, unique_names, my_events):
         div = result.find(class_="b-image__content")
         h = div.find("h3").text.strip().replace("\xa0", " ")
         p = div.find("p").text.strip()
-        
-
         if h not in unique_names:
             my_events.append({"name": h, "date": p, "link": link, "description": description})
             # print(f"{h}: {p}; {link}, {description}")
@@ -134,15 +131,10 @@ def send_email(my_events: dict):
     </html>
     """
 
-
-
-    # Create the email message
     msg = MIMEMultipart()
     msg['From'] = my_email
     msg['To'] = my_email
     msg['Subject'] = "Přehled brněnských akcí"
-
-    # Attach the HTML message
     msg.attach(MIMEText(html_message, 'html'))
 
     with smtplib.SMTP("smtp.gmail.com") as connection:
@@ -155,19 +147,14 @@ def send_email(my_events: dict):
         )
         logging.info("Emails were sent SUCCESSFULLY.")
 
-
 # event categories to be scraped
 categories = ["festivaly", "vystava", "gastronomicke", "veletrhy-vzdelavaci", "akce-tic-brno"]
 
 unique_names = set()
 my_events = list()
 
-
-
 for category in categories:
     scrape_events(category, unique_names, my_events)
 
 save_as_json(my_events)
 send_email(my_events)
-
-
