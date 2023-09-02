@@ -1,8 +1,8 @@
-# Brno-new-events-scraper
+# Brno-upcoming-events-scraper
 
 ## Overview
 
-The BRNO New Events Sender is a Python-based tool for scraping and sending information about upcoming events in Brno, Czech Republic. 
+The Brno Upcoming Events Scraper is a Python-based tool for scraping and sending information about upcoming events in Brno, Czech Republic. 
 This repository contains the code for scraping event data from website [GoToBrno](https://www.gotobrno.cz) and sending event notifications on my personal e-mail.
 
 ## Features
